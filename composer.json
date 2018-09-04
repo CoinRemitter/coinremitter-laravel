@@ -1,0 +1,18 @@
+{
+    "name": "coinremits/coinremits-laravel",
+    "description": "this is for direct use of apis of coinremitter",
+    "type": "library",
+    "license": "MIT",
+    "version":"0.1",
+    "require": {},
+    "autoload":{
+        "psr-4":{
+            "Coinremit\\Coinremit_sdk\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    }
+}
