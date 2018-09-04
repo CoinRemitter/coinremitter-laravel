@@ -9,6 +9,7 @@
             "Coinremit\\Coinremit_sdk\\": "src/"
         }
     },
+    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "0.1-dev"
