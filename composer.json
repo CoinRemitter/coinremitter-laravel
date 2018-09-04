@@ -3,7 +3,9 @@
     "description": "this is for direct use of apis of coinremitter",
     "type": "library",
     "license": "MIT",
-    "require": {},
+    "require": {
+        "laravel/framework": "5.2.*"
+    },
     "autoload":{
         "psr-4":{
             "Coinremit\\Coinremit_sdk\\": "src/"
