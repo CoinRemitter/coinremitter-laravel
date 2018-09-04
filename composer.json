@@ -1,9 +1,8 @@
 {
-    "name": "coinremits/coinremits-laravel",
+    "name": "coinremits/coinremitslaravel",
     "description": "this is for direct use of apis of coinremitter",
     "type": "library",
     "license": "MIT",
-    "version":"0.1",
     "require": {},
     "autoload":{
         "psr-4":{
