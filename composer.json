@@ -17,7 +17,7 @@
         },
         "laravel": {
             "providers": [
-                "Coinremitterlaravel\\CoinremitterLaravel\\ServiceProvider"
+                "Coinremitterlaravel\\CoinremitterLaravel\\CoinremiterServiceProvider"
             ]
         }
     }
