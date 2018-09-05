@@ -1,6 +1,6 @@
 {
-    "name": "coinremits/coinremitslaravel",
-    "description": "this is for direct use of apis of coinremitter",
+    "name": "coinremitterlaravel/coinremitter-laravel",
+    "description": "this is for direct use of apis of coinremitter into laravel",
     "type": "library",
     "license": "MIT",
     "require": {
@@ -8,9 +8,8 @@
     },
     "autoload":{
         "psr-4":{
-            "Coinremit\\Coinremit_sdk\\": "src/"
+            "Coinremitterlaravel\\CoinremitterLaravel\\": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
     
 }
