@@ -1,6 +1,6 @@
 <?php
 
-namespace Coinremitterlaravel\CoinremitterLaravel;
+namespace Coinremitter;
 
 use Illuminate\Support\ServiceProvider;
 
