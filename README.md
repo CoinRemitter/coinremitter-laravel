@@ -86,9 +86,24 @@ success response :
 ```
 also you can assign lable to your address with passing parameter to get_new_address method like:
 ```
-$address = $obj->get_new_address("my_label");
+$param = [
+    'label'=>'my_label'
+];
+$address = $obj->get_new_address($param);
 ```
-the response will remian same as above response.
+the response will add given label at label key.
+```
+{
+    "flag":1,
+    "msg":"New address created successfully !",
+    "action":"get-new-address",
+    "data":{
+        "address":"MMtU5BzKcrew9BdTzru9QyT3YravQmzokh",
+        "label":"my_label"
+        
+    }
+}
+```
 
 ### Validate wallet address
 for validation wallet address use folowing method:
