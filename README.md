@@ -1,26 +1,27 @@
 # coinremitter-laravel
-coinremitter for laravel
+coinremitter plugin for laravel
 
 ## installation guide.
 you can install coin remitter plugin using composer in laraval : 
 ```
 composer require coinremitter/laravel
 ```
-## After installing pacakge 
- register service provider to your config/app.php like below : 
+## Register service provider to your config/app.php like below : 
+
+Add ```Coinremitter\CoinremiterServiceProvider::class ``` line at bottom in 
+```providers``` array
  ```
  'providers' => [
     Coinremitter\CoinremiterServiceProvider::class,
  ]
  ```
- ## After register provider,
- publish configuration file to config folder using following command:
+## Publish configuration file to config folder using following command:
  ```
  php artisan vendor:publish
  ```
- 
- ## After publishing config file 
- set credentials of all coins which you want to use from coinremitter in config/coinremitter.php like : 
+
+## Set credentials of all coins which you want to use from coinremitter in config/coinremitter.php like : 
+If this file not exist then create and set configuration like this.  [How to get API key and Password ?](https://blog.coinremitter.com/how-to-get-api-key-and-password-of-coinremitter-wallet/)
  ```
  return [
     'BTC'=>[
@@ -34,22 +35,22 @@ composer require coinremitter/laravel
 ];
  ```
  
- ## Usage of library : 
+## Usage of library : 
  
  you have to include namespace of package wherever you want to use this library like,
  ```
  use Coinremitter\Coinremitter;
  ```
- after using name space you can access all the methods of library by creating object of class like ,
+ after using name space you can access all the methods of library by creating object of class like,
  ```
- $obj = new Coinremitter('BTC');
+ $btc_wallet = new Coinremitter('BTC');
  ```
  here "BTC" must be in config/coinremitter.php file array.
 
 ### Get Balance : 
 you can get balance of your wallet using get_balance call.
 ```
-$balance = $obj->get_balance();
+$balance = $btc_wallet->get_balance();
 ```
 this will return either success response or error response if something went wrong.like below is the success response : 
 ```
@@ -67,7 +68,7 @@ this will return either success response or error response if something went wro
 ### Create New Wallet Address
 You can get new wallet address using folowing method:
 ```
-$address = $obj->get_new_address();
+$address = $btc_wallet->get_new_address();
 ```
 success response : 
 ```
@@ -89,7 +90,7 @@ also you can assign lable to your address with passing parameter to get_new_addr
 $param = [
     'label'=>'my_label'
 ];
-$address = $obj->get_new_address($param);
+$address = $btc_wallet->get_new_address($param);
 ```
 the response will add given label at label key.
 ```
@@ -112,7 +113,7 @@ $param = [
     'address'=>'your_Address_to_validate'
 ];
 
-$validate = $obj->validate_address($param);
+$validate = $btc_wallet->validate_address($param);
 ```
 response : 
 ```
@@ -128,7 +129,6 @@ response :
 
 
 ```
-if ```data``` in response is ```1``` then the given address is valid,otherwise it's a invalid address.
 
 ### withdraw amount 
 to withdraw amount to specific  address following method will use : 
@@ -138,7 +138,7 @@ $param = [
     'to_address'=>'YOUR_ADDRESS',
     'amount'=>123
 ];
-$withdraw = $obj->withdraw($param);
+$withdraw = $btc_wallet->withdraw($param);
 ```
 success response : 
 ```
@@ -169,7 +169,7 @@ get transaction detail using id received from ```withdraw amount``` response's `
 $param = [
     'id'=>'5b5ff10a8ebb830edb4e2a22'
 ];
-$transaction = $obj->get_transaction($param);
+$transaction = $btc_wallet->get_transaction($param);
 ```
 success response : 
 ```
@@ -223,15 +223,17 @@ if reponse data object contains ```type``` is equal to ```send``` then response 
 you can create invoice using following method : 
 ```
 $param = [
-    'amount'=>123,      //required.
-    'notify_url'=>'https://notification.url', //optional,url on which you wants to receive notification,
-    'name'=>'',//optional,
+    'amount'=>800,      //required.
+    'notify_url'=>'https://yourdomain.com/notify-url', //optional,url on which you wants to receive notification,
+    'fail_url' => 'https://yourdomain.com/fail-url', //optional,url on which user will be redirect if user cancel invoice,
+    'suceess_url' => 'https://yourdomain.com/success-url', //optional,url on which user will be redirect when invoice paid,
+    'name'=>'random name',//optional,
     'currency'=>'usd',//optional,
-    'expire_hours'=>'',//optional,
+    'expire_time'=>'20',//optional, invoice will expire in 20 minutes.
     'description'=>'',//optional.
 ];
 
-$invoice  = $obj->create_invoice($param);
+$invoice  = $btc_wallet->create_invoice($param);
 ```
 
 success response : 
@@ -272,82 +274,84 @@ get invoice detail using invoice_id received using following method :
 $param = [
     'invoice_id'=>'ETH002'
 ];
-$invoice = $obj->get_invoice($param);
+$invoice = $btc_wallet->get_invoice($param);
+
 ```
 success response : 
+
 ```
 {
-   "flag":1,
-   "msg":"success",
-   "action":"get-invoice",
-   "data":{
-      "id":"5b7650458ebb8306365624a2",
-      "invoice_id":"ETH002",
-      "merchant_id":"5bc46fb28ebb8363d2657347",
-      "url":"http://192.168.0.112/coinremitter/public/invoice/5b7650458ebb8306365624a2",
-      "total_amount":0.0009,
-      "paid_amount":0,
-      "usd_amount":800,
-      "coin":"ETH",
-      "name":"random name",
-      "description":"Hello world",
-      "wallet_name":"New Test-LTC",
-      "address":"rger54654fgsd4h6u7dgsg",
-      "payment_history":[
-         {
-            "txid":"c4b853d4be7586798870a4aa766e3bb781eddb24aaafd81da8f66263017b872d",
-            "explorer_url":"http://btc.com/exp/c4b853d4be7586798870a4aa766e3bb781eddb24aaafd81da8f66263017b872d",
-            "amount":0.005,
-            "date":"2019-12-02 12:09:02",
-            "confirmation":781
-         },
-         {
-            "txid":"a2541253ab72d7cf29f2f9becb1e31320dd0ed418f761ab1973dc9e412a51c7f",
-            "explorer_url":"http://btc.com/exp/a2541253ab72d7cf29f2f9becb1e31320dd0ed418f761ab1973dc9e412a51c7f",
-            "amount":0.005,
-            "date":"2019-12-02 12:15:02",
-            "confirmation":778
-         }
-      ],
-      "status":"Pending",
-      "status_code":0,
-      "suceess_url":"http://yourdomain.com/success-url",
-      "fail_url":"http://yourdomain.com/fail-url",
-      "expire_on":"2018-12-06 10:35:57",
-      "invoice_date":"2018-08-17 10:04:13",
-      "last_updated_date":"2018-08-17 10:04:13"
-   }
+    "flag":1,
+    "msg":"success",
+    "action":"get-invoice",
+    "data":{
+        "id":"5b7650458ebb8306365624a2",
+        "invoice_id":"BTC02",
+        "merchant_id":"5bc46fb28ebb8363d2657347",
+        "url":"http://192.168.0.112/coinremitter/public/invoice/5b7650458ebb8306365624a2",
+        "total_amount":0.0009,
+        "paid_amount":0,
+        "usd_amount":800,
+        "coin":"ETH",
+        "name":"random name",
+        "description":"Hello world",
+        "wallet_name":"New Test-LTC",
+        "address":"rger54654fgsd4h6u7dgsg",
+        "payment_history":[
+                {
+                    "txid":"c4b853d4be7586798870a4aa766e3bb781eddb24aaafd81da8f66263017b872d",
+                    "explorer_url":"http://btc.com/exp/c4b853d4be7586798870a4aa766e3bb781eddb24aaafd81da8f66263017b872d",
+                    "amount":0.005,
+                    "date":"2019-12-02 12:09:02",
+                    "confirmation":781
+                    },
+                {
+                    "txid":"a2541253ab72d7cf29f2f9becb1e31320dd0ed418f761ab1973dc9e412a51c7f",
+                    "explorer_url":"http://btc.com/exp/a2541253ab72d7cf29f2f9becb1e31320dd0ed418f761ab1973dc9e412a51c7f",
+                    "amount":0.005,
+                    "date":"2019-12-02 12:15:02",
+                    "confirmation":778
+                }
+        ],
+        "status":"Pending",
+        "status_code":0,
+        "suceess_url":"http://yourdomain.com/success-url",
+        "fail_url":"http://yourdomain.com/fail-url",
+        "expire_on":"2018-12-06 10:35:57",
+        "invoice_date":"2018-08-17 10:04:13",
+        "last_updated_date":"2018-08-17 10:04:13"
+    }
 }
 ```
 
-### Get Coin Rate
+### Get Live Coin Price  in USD
 get coin rate using following method :
 ```
-$rate = $obj->get_coin_rate();
+$rate = $btc_wallet->get_coin_rate();
 ```
 success response : 
 ```
 {
-   "flag":1,
-   "msg":"success",
-   "action":"get-coin-rate",
-   "data":{
-      "BTC":{
-         "symbol":"BTC",
-         "name":"Bitcoin",
-         "price":7289.01
-      },
-      "LTC":{
-         "symbol":"LTC",
-         "name":"Litecoin",
-         "price":145.51
-      },
-      "DOGE":{
-         "symbol":"DOGE",
-         "name":"DogeCoin",
-         "price":0.0001
-      }
-   }
+    "flag":1,
+    "msg":"success",
+    "action":"get-coin-rate",
+    "data":{
+        "BTC":{
+            "symbol":"BTC",
+            "name":"Bitcoin",
+            "price":7289.01
+        },
+        "LTC":{
+            "symbol":"LTC",
+            "name":"Litecoin",
+            "price":145.51
+        },
+        "DOGE":{
+            "symbol":"DOGE",
+            "name":"DogeCoin",
+            "price":0.0001
+        }
+    }
 }
 ```
 
