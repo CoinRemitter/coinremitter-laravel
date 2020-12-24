@@ -1,5 +1,7 @@
 <?php
 namespace Coinremitter;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class Coinremitter {
 //    use Config;
@@ -8,6 +10,16 @@ class Coinremitter {
      * @var string endpoint of api
      */
     private $url='https://coinremitter.com/api/';
+    /**
+     * 
+     * @var string of api version
+     */
+    private $version = 'v2';
+    /**
+     * 
+     * @var string of api version
+     */
+    private $plugin_version = '0.1.4';
     /**
      *
      * @var string  coin for which this api is used.
@@ -41,9 +53,6 @@ class Coinremitter {
             
             }
         }
-        if(!function_exists('curl_version')){
-            throw new \Exception("php-curl is not enabled. Install it");
-        }
         
     }
     /**
@@ -51,7 +60,7 @@ class Coinremitter {
      * @return array() returns array with success or error response.
      */
     public function get_balance(){
-        $url = $this->url.$this->coin.'/get-balance';
+        $url = $this->url.$this->version.'/'.$this->coin.'/get-balance';
         $res = $this->curl_call($url, $this->param);
         return $res;
     }
@@ -61,7 +70,7 @@ class Coinremitter {
      * @return array() returns array with success or error response.
      */
     public function get_new_address($param=[]){
-        $url = $this->url.$this->coin.'/get-new-address';
+        $url = $this->url.$this->version.'/'.$this->coin.'/get-new-address';
         $this->param = array_merge($this->param,$param);
         $res = $this->curl_call($url, $this->param);
         return $res;
@@ -72,7 +81,7 @@ class Coinremitter {
      * @return array() returns array with success or error response.
      */
     public function validate_address($param=[]){
-        $url = $this->url.$this->coin.'/validate-address';
+        $url = $this->url.$this->version.'/'.$this->coin.'/validate-address';
         $this->param = array_merge($this->param,$param);
         $res = $this->curl_call($url, $this->param);
         return $res;
@@ -84,7 +93,7 @@ class Coinremitter {
      */
     public function withdraw($param=[]){
 
-        $url = $this->url.$this->coin.'/withdraw';
+        $url = $this->url.$this->version.'/'.$this->coin.'/withdraw';
         $this->param = array_merge($this->param,$param);
         $res = $this->curl_call($url, $this->param);
         return $res;
@@ -96,7 +105,7 @@ class Coinremitter {
      */
     public function get_transaction($param=[]){
     
-        $url = $this->url.$this->coin.'/get-transaction';
+        $url = $this->url.$this->version.'/'.$this->coin.'/get-transaction';
         $this->param = array_merge($this->param,$param);
         $res = $this->curl_call($url, $this->param);
         return $res;
@@ -108,7 +117,7 @@ class Coinremitter {
      */
     public function create_invoice($param=[]){
 
-        $url = $this->url.$this->coin.'/create-invoice';
+        $url = $this->url.$this->version.'/'.$this->coin.'/create-invoice';
         $this->param = array_merge($this->param,$param);
         $res = $this->curl_call($url, $this->param);
         return $res;
@@ -120,7 +129,7 @@ class Coinremitter {
      */
     public function get_invoice($param=[]){
 
-        $url = $this->url.$this->coin.'/get-invoice';
+        $url = $this->url.$this->version.'/'.$this->coin.'/get-invoice';
         $this->param = array_merge($this->param,$param);
         $res = $this->curl_call($url, $this->param);
         return $res;
@@ -146,41 +155,19 @@ class Coinremitter {
             return $this->error_res('Please set API_KEY and PASSWORD for '.$this->coin);
         }
         
-        $header[] = "Accept: application/json";
-	
-    	$ch = curl_init();
-    	curl_setopt($ch, CURLOPT_URL, $url);
-    	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        $userAgent = 'CR@' . $this->version . ',laravel plugin@'.$this->plugin_version; // 0.1.4
+        $header = array('User-Agent' => $userAgent);
 
-    	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $client = new Client();
+        $params['headers'] = $header;
+        $params['form_params'] = $post;
+        $response = $client->post($url, $params);
 
-            curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 20);
-            curl_setopt( $ch, CURLOPT_TIMEOUT, 20);
-            
-    	if ($post){
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-    	}
-
-    	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-    	$rs = curl_exec($ch);
-        $info =  curl_getinfo($ch);
-
-            
-            
-    	if(empty($rs)){
-                curl_close($ch);
-                return $this->error_res();
-    	}
-    	curl_close($ch);
-        
-        $decode = json_decode($rs,true);
-        
-        
-	return $decode;
+        if($response->getStatusCode() == 200){
+            return json_decode($response->getBody(),true);
+        }else{
+            return $this->error_res();
+        }
     }
     /**
      * 
@@ -199,3 +186,4 @@ class Coinremitter {
         return $res;
     }
 }
+ 
