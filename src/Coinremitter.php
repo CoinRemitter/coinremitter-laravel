@@ -1,7 +1,6 @@
 <?php
 namespace Coinremitter;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class Coinremitter {
 //    use Config;
@@ -19,7 +18,7 @@ class Coinremitter {
      * 
      * @var string of api version
      */
-    private $plugin_version = '0.1.4';
+    private $plugin_version = '0.1.5';
     /**
      *
      * @var string  coin for which this api is used.
@@ -154,17 +153,12 @@ class Coinremitter {
         if(!isset($post['api_key']) && !isset($post['password'])){
             return $this->error_res('Please set API_KEY and PASSWORD for '.$this->coin);
         }
-        
-        $userAgent = 'CR@' . $this->version . ',laravel plugin@'.$this->plugin_version; // 0.1.4
+        $userAgent = 'CR@' . $this->version . ',laravel plugin@'.$this->plugin_version; // 0.1.5
         $header = array('User-Agent' => $userAgent);
+        $response = Http::withHeaders($header)->post($url,$post);
 
-        $client = new Client();
-        $params['headers'] = $header;
-        $params['form_params'] = $post;
-        $response = $client->post($url, $params);
-
-        if($response->getStatusCode() == 200){
-            return json_decode($response->getBody(),true);
+        if($response->status() == 200){
+            return $response->json();
         }else{
             return $this->error_res();
         }
