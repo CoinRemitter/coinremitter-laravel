@@ -13,7 +13,7 @@ class Coinremitter {
      * 
      * @var string of api version
      */
-    private $version = 'v2';
+    private $version = 'v3';
     /**
      * 
      * @var string of api version
@@ -105,6 +105,18 @@ class Coinremitter {
     public function get_transaction($param=[]){
     
         $url = $this->url.$this->version.'/'.$this->coin.'/get-transaction';
+        $this->param = array_merge($this->param,$param);
+        $res = $this->curl_call($url, $this->param);
+        return $res;
+    }
+    /**
+     * get transaction details of given transaction id.
+     * @param array() $param pass address to get transactions of given address.
+     * @return array() returns array with success or error response.
+     */
+    public function get_transaction_by_address($param=[]){
+    
+        $url = $this->url.$this->version.'/'.$this->coin.'/get-transaction-by-address';
         $this->param = array_merge($this->param,$param);
         $res = $this->curl_call($url, $this->param);
         return $res;
