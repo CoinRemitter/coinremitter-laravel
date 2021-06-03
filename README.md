@@ -354,5 +354,77 @@ success response :
     }
 }
 ```
+### Get Ctrypto Rate
+get crypto rate using fiat_symbol and fiat_amount received using following method : 
+```
+$param = [
+    'fiat_symbol' => 'USD',
+    'fiat_amount' => 1
+];
+$invoice = $btc_wallet->get_fiat_to_crypto_rate($param);
+```
+success response : 
+```
+{
+   "flag":1,
+   "msg":"success",
+   "action":"get-fiat-to-crypto-rate",
+   "data":{
+      "crypto_amount":"0.02123593",
+      "crypto_symbol":"BTC",
+      "crypto_currency":"Bitcoin",
+      "fiat_amount":"1",
+      "fiat_symbol":"USD"
+   }
+}
+```
+
+### Get Transaction By The Address
+get transaction using address received using following method :
+```
+$param = [
+    'address' => 'MLjDMFsob8gk9EX6tj8KUKSpmHM6qG2qFK',
+];
+$invoice = $btc_wallet->get_transaction_by_address($param);
+```
+success response : 
+```
+{
+   "flag":1,
+   "msg":"success",
+   "action":"get-transaction-by-address",
+   "data":[
+      {
+         "id":"5b7650458ebb8306365624a2",
+         "txid":"7a6ca109c7c651f9b70a7d4dc8fa77de322e420119c5d2470bce7f08ba0cd1d6",
+         "explorer_url":"http://coin-explorer-url/exp/7a6ca109c7c651f9b70a7d4dc8fa7...",
+         "merchant_id":"5bc46fb28ebb8363d2657347",
+         "type":"receive",
+         "coin_short_name":"BTC",
+         "wallet_id":"5c42ea0ab846fe751421cfb2",
+         "wallet_name":"my-wallet",
+         "address":"MLjDMFsob8gk9EX6tj8KUKSpmHM6qG2qFK",
+         "amount":"2",
+         "confirmations":3,
+         "date":"2018-08-17 10:04:13"
+      },
+      {
+         "id":"23sdew232158ebb8306365624a2",
+         "txid":"7a6ca109c7c651f9b70fdgfg44er34re7de322e420119c5d2470bce7f08ba0cd1d6",
+         "explorer_url":"http://coin-explorer-url/exp/2322ereer344c7c651f9b70a7d4dc8fa7...",
+         "merchant_id":"3434df4w28ebb8363d2657347",
+         "type":"receive",
+         "coin_short_name":"BTC",
+         "wallet_id":"5c42ea0ab846fe751421cfb2",
+         "wallet_name":"my-wallet",
+         "address":"MLjDMFsob8gk9EX6tj8KUKSpmHM6qG2qFK",
+         "amount":"1",
+         "confirmations":2,
+         "date":"2018-08-17 10:05:13"
+      }
+   ]
+}
+```
+
 
 **for further reference please visit our [api documentation](https://coinremitter.com/docs)**

@@ -13,12 +13,12 @@ class Coinremitter {
      * 
      * @var string of api version
      */
-    private $version = 'v2';
+    private $version = 'v3';
     /**
      * 
      * @var string of api version
      */
-    private $plugin_version = '0.1.5';
+    private $plugin_version = '0.1.8';
     /**
      *
      * @var string  coin for which this api is used.
@@ -143,13 +143,35 @@ class Coinremitter {
         return $res;
     }
     /**
+     * get crypto rate of given fiat_symbol and fiat_amount.
+     * @param array() $param pass fiat_symbol and fiat_amount to get crypto rate.
+     * @return array() returns array with success or error response.
+     */
+    public function get_fiat_to_crypto_rate($param=[]){
+        $url = $this->url.$this->version.'/'.$this->coin.'/get-fiat-to-crypto-rate';
+        $this->param = array_merge($this->param,$param);
+        $res = $this->curl_call($url, $this->param);
+        return $res;
+    }
+    /**
+     * get transaction details  of given address.
+     * @param array() $param pass address to get transaction details.
+     * @return array() returns array with success or error response.
+     */
+    public function get_transaction_by_address($param=[]){
+        $url = $this->url.$this->version.'/'.$this->coin.'/get-transaction-by-address';
+        $this->param = array_merge($this->param,$param);
+        $res = $this->curl_call($url, $this->param);
+        return $res;
+    }
+    /**
      * 
      * @param string $url
      * @param array $post optional, parameters.
      * @return array()
      */
     public  function curl_call($url, $post = '') {
-	
+    
         if(!isset($post['api_key']) && !isset($post['password'])){
             return $this->error_res('Please set API_KEY and PASSWORD for '.$this->coin);
         }
