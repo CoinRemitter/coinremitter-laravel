@@ -1,6 +1,6 @@
 {
-    "name": "coinremitter/laravel",
-    "description": "Official laravel plugin for coinremitter cryptocurrency payment gateway",
+    "name": "jalallinux/multi-coinremitter-laravel",
+    "description": "non Official laravel plugin for multi coinremitter cryptocurrency payment gateway",
     "type": "library",
     "license": "MIT",
     "require": {
@@ -8,7 +8,7 @@
     },
     "autoload":{
         "psr-4":{
-            "Coinremitter\\": "src/"
+            "JalalLinuX\\": "src/"
         }
     },
     "extra": {
@@ -16,9 +16,7 @@
             "dev-master": "0.1-dev"
         },
         "laravel": {
-            "providers": [
-                "Coinremitter\\CoinremiterServiceProvider"
-            ]
+            "providers": []
         }
     }
 }

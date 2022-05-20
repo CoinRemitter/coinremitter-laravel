@@ -1,49 +1,24 @@
-# coinremitter-laravel
-coinremitter plugin for laravel
+# multi-coinremitter-laravel
+multi-coinremitter plugin for laravel
 
 ## installation guide.
 you can install coin remitter plugin using composer in laraval : 
 ```
-composer require coinremitter/laravel
+composer require composer require jalallinux/multi-coinremitter-laravel
 ```
-## Register service provider to your config/app.php like below : 
-
-Add ```Coinremitter\CoinremiterServiceProvider::class ``` line at bottom in 
-```providers``` array
- ```
- 'providers' => [
-    Coinremitter\CoinremiterServiceProvider::class,
- ]
- ```
-## Publish configuration file to config folder using following command:
- ```
- php artisan vendor:publish
- ```
-
-## Set credentials of all coins which you want to use from coinremitter in config/coinremitter.php like : 
-If this file not exist then create and set configuration like this.  [How to get API key and Password ?](https://blog.coinremitter.com/how-to-get-api-key-and-password-of-coinremitter-wallet/)
- ```
- return [
-    'BTC'=>[
-        'API_KEY'=>'YOUR_API_KEY_FROM_COINREMITTER_WALLET',
-        'PASSWORD'=>'YOUR_PASSWORD_FOR_WALLET',
-    ],
-    'LTC'=>[
-        'API_KEY'=>'YOUR_API_KEY_FROM_COINREMITTER_WALLET',
-        'PASSWORD'=>'YOUR_PASSWORD_FOR_WALLET',
-    ],
-];
- ```
  
 ## Usage of library : 
  
  you have to include namespace of package wherever you want to use this library like,
  ```
- use Coinremitter\Coinremitter;
+ use JalalLinuX\Coinremitter;
  ```
  after using name space you can access all the methods of library by creating object of class like,
  ```
- $btc_wallet = new Coinremitter('BTC');
+ $btc_wallet = new Coinremitter('BTC', [
+    'api_key' => 'YOUR_BTC_API_KEY',
+    'password' => 'YOUR_BTC_PASSWORD'
+ ]);
  ```
  here "BTC" must be in config/coinremitter.php file array.
 
