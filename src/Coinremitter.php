@@ -18,7 +18,7 @@ class Coinremitter {
      * 
      * @var string of api version
      */
-    private $plugin_version = '0.1.8';
+    private $plugin_version = '0.1.9';
     /**
      *
      * @var string  coin for which this api is used.
