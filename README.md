@@ -23,7 +23,7 @@ Add ```Coinremitter\CoinremiterServiceProvider::class``` line at the bottom in t
  ```
 ## Publish the configuration file to the config folder using the following command:
  ```
- php artisan vendor:publish
+ php artisan vendor:publish --provider="Coinremitter\CoinremiterServiceProvider"
  ```
 
 ## Set credentials of all coins which you want to use from coinremitter in config/coinremitter.php like this:
@@ -98,7 +98,7 @@ Success response :
 Also, you can assign a label to your address with a passing parameter to the get_new_address method like this:
 ```
 $param = [
-    'label'=>'my_label'
+    'label'=>'my-label'
 ];
 $address = $btc_wallet->get_new_address($param);
 ```
@@ -110,7 +110,7 @@ The response will add the given label at the label key.
    "action":"get-new-address",
    "data":{
       "address":"MMtU5BzKcrewdTzru9QyT3YravQmzokh",
-      "label":"my_label",
+      "label":"my-label",
       "qr_code":"https://coinremitter.com/qr/btc/image.png"
    }
 }
@@ -282,7 +282,7 @@ The dates received in the response are in the UTC format.
 You can create an invoice using the following method:
 ```
 $param = [
-    'amount'=>0.00020390,      //required.
+    'amount'=>"15",      //required.
     'notify_url'=>'https://yourdomain.com/notify-url', //optional,url on which you wants to receive notification,
     'fail_url' => 'https://yourdomain.com/fail-url', //optional,url on which user will be redirect if user cancel invoice,
     'suceess_url' => 'https://yourdomain.com/success-url', //optional,url on which user will be redirect when invoice paid,
