@@ -2,6 +2,7 @@
 
 namespace Coinremitter;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 
 class CoinremiterServiceProvider extends ServiceProvider
@@ -13,8 +14,19 @@ class CoinremiterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-        
+        $config = realpath(__DIR__ . '/config/coinremitter.php');
+
+        $this->publishes([
+            $config => config_path('coinremitter.php')
+        ]);
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/config/coinremitter.php',
+            'coinremitter'
+        );
+        if (File::exists(__DIR__ . '/config/coinremitter.php')) {
+            require __DIR__ . '/config/coinremitter.php';
+        }
     }
 
     /**
@@ -22,14 +34,5 @@ class CoinremiterServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
-        
-        //
-        $this->mergeConfigFrom(__DIR__.'/config/coinremitter.php', 'coinremitter');
-        $this->publishes([
-            __DIR__.'/config' => base_path('config'),
-        ]);
-
-    }
+    public function register() {}
 }
