@@ -34,8 +34,7 @@ class Coinremitter
     
     /**
      * 
-     * @param string $api_key - pass valid api_key of wallet
-     * @param string $password - pass valid password of wallet
+     * @param string $coin_name - Pass coin short name. E.g. BTC for Bitcoin
      */
     public function __construct($coin_name = "")
     {
@@ -503,10 +502,8 @@ class Coinremitter
             if (!isset(self::$credencials['api_key']) || !isset(self::$credencials['password'])) {
                 throw new \Exception("Api key and password is required.");
             }
-            $header = array(
-                'X-Api-Key' => self::$credencials['api_key'],
-                'X-Api-Password' => self::$credencials['password'],
-            );
+            $header['X-Api-Key'] = self::$credencials['api_key'];
+            $header['X-Api-Password'] = self::$credencials['password'];
         }
         return $header;
     }

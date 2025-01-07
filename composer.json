@@ -1,7 +1,15 @@
 {
     "name": "coinremitter/laravel",
-    "description": "Official laravel plugin for Coinremitter - cryptocurrency payment gateway",
+    "description": "Official laravel plugin for Coinremitter cryptocurrency payment gateway",
     "type": "library",
+    "keywords": ["coinremitter", "laravel", "cryptocurrency", "payment gateway", "api"],
+    "homepage": "https://coinremitter.com/",
+    "authors": [
+        {
+            "name": "Coinremitter",
+            "email": "coinremitter@outlook.com"
+        }
+    ],
     "license": "MIT",
     "require": {
         "laravel/framework": ">=7.0 <11.38.0"
