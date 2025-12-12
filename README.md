@@ -120,7 +120,7 @@ $param = [
 ]
 $address = $btc->createAddress($param);
 ```
-Success response : 
+Success Response : 
 ```php
 {
     "success": true,
@@ -155,7 +155,7 @@ $param = [
 
 $validate = $btc->validateAddress($param);
 ```
-Success response : 
+Success Response : 
 ```php
 {
     "success": true,
@@ -200,8 +200,8 @@ To withdraw the amount to a specific address the following method will be used:
 $param = [
     'address'=>'MLjDMFsobgkxxxxxxxxxxxxxxxxxxxx', // required, Address of in which you want to send amount.
     'amount'=>0.0001, // required, Total amount which you want to send.
-    'withdrawal_speed' => optional, The speed of withdrawal. Either 'priority', 'medium' or 'low'.Default speed take from your wallet settings.
-];
+    'withdrawal_speed' => 'priority' // optional, The speed of withdrawal. Either 'priority', 'medium' or 'low'.Default speed take from your wallet settings.
+];  
 $withdraw = $btc->withdraw($param);
 ```
 Success response:
@@ -298,7 +298,7 @@ $param = [
 ];
 $invoice = $btc->getTransactionByAddress($param);
 ```
-Success response : 
+Success Response : 
 ```php
 {
     "success": true,
@@ -387,6 +387,7 @@ Success response:
         "merchant_id": "6746c765xxxxxxxxxxxxxx",
         "status": "Pending",
         "status_code": 0,
+        "payment_history": [],
         "success_url": "",
         "fail_url": "",
         "notify_url": "",
@@ -471,7 +472,7 @@ Success response:
 ```
 The dates received in the response are in the UTC format.
 
-### Fiat to crypto rate
+### Fiat To Crypto Rate
 To get fiat to crypto rate.
 ```php
 $param = [
@@ -481,7 +482,7 @@ $param = [
 ];
 $rate = $btc->fiatToCryptoRate();
 ```
-Success response : 
+Success Response : 
 ```php
 {
     "success": true,
@@ -514,7 +515,7 @@ $param = [
 ];
 $invoice = $btc->cryptoToFiatRate($param);
 ```
-Success response : 
+Success Response : 
 ```json
 {
     "success": true,
@@ -543,13 +544,13 @@ Success response :
 }
 ```
 
-### Get Supported currency
+### Get Supported Currency
 To get all supported currency and their detail.
 
 ```php
 $supportedCurrency = $btc->getSupportedCurrency();
 ```
-Success response : 
+Success Response : 
 ```json
 {
     "success": true,

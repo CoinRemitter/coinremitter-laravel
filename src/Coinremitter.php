@@ -24,7 +24,13 @@ class Coinremitter
      * 
      * @var string of plugin version
      */
-    protected static $plugin_version = '1.0.0';
+    protected static $plugin_version = '1.0.1';
+
+    /**
+     * 
+     * @var string of laravel version
+     */
+    protected static $laravel_version;
 
     /**
      *
@@ -38,6 +44,8 @@ class Coinremitter
      */
     public function __construct($coin_name = "")
     {
+        self::$laravel_version = app()->version();
+        
         if ($coin_name == "") {
             if (request()->coin)
                 $coin_name = request()->coin;
@@ -497,7 +505,7 @@ class Coinremitter
      */
     private static function setRequestHeader($function): array
     {
-        $header['User-Agent'] = 'CR@' . self::$version . ',laravel plugin@' . self::$plugin_version;
+        $header['User-Agent'] = 'Laravel@' . self::$laravel_version . ', crplugin@' . self::$plugin_version;
         if (!in_array($function, ['fiatToCryptoRate', 'cryptoToFiatRate', 'getSupportedCurrency'])) {
             if (!isset(self::$credencials['api_key']) || !isset(self::$credencials['password'])) {
                 throw new \Exception("Api key and password is required.");

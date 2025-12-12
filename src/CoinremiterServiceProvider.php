@@ -14,18 +14,16 @@ class CoinremiterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $config = realpath(__DIR__ . '/config/coinremitter.php');
-
         $this->publishes([
-            $config => config_path('coinremitter.php')
-        ]);
+            __DIR__ . '/config/coinremitter.php' => config_path('coinremitter.php'),
+        ], 'config');
 
-        $this->mergeConfigFrom(
-            __DIR__ . '/config/coinremitter.php',
-            'coinremitter'
-        );
-        if (File::exists(__DIR__ . '/config/coinremitter.php')) {
-            require __DIR__ . '/config/coinremitter.php';
+        // Only merge config if the user has already published it
+        if (file_exists(config_path('coinremitter.php'))) {
+            $this->mergeConfigFrom(
+                __DIR__ . '/config/coinremitter.php',
+                'coinremitter'
+            );
         }
     }
 
@@ -34,5 +32,13 @@ class CoinremiterServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() {}
+    public function register(): void
+    {
+        // Merge default package config on every request (safe fallback)
+        // This ensures config values exist even before publishing
+        $this->mergeConfigFrom(
+            __DIR__ . '/config/coinremitter.php',
+            'coinremitter'
+        );
+    }
 }
